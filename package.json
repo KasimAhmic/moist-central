@@ -32,6 +32,7 @@
     "@vitest/coverage-v8": "^1.1.1",
     "commitizen": "^4.3.0",
     "concurrently": "^8.2.2",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^8.56.0",
     "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.3",
@@ -47,16 +48,7 @@
   "commitlint": {
     "extends": [
       "@commitlint/config-conventional"
-    ],
-    "rules": {
-      "subject-case": [
-        2,
-        "always",
-        [
-          "sentence-case"
-        ]
-      ]
-    }
+    ]
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx,md,html,css}": [
@@ -66,7 +58,7 @@
   },
   "config": {
     "commitizen": {
-      "path": "cz-conventional-changelog"
+      "path": "./node_modules/cz-conventional-changelog"
     }
   }
 }
