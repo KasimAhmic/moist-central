@@ -1,0 +1,72 @@
+{
+  "name": "@ahmic/moist-central",
+  "version": "0.1.0",
+  "description": "Keep track of life's most important events",
+  "repository": "https://github.com/KasimAhmic/moist-central.git",
+  "author": "Kasim Ahmic",
+  "license": "AGPL-3.0-or-later",
+  "private": true,
+  "workspaces": [
+    "packages/client",
+    "packages/server"
+  ],
+  "scripts": {
+    "client": "yarn workspace @ahmic/moist-central-client",
+    "server": "yarn workspace @ahmic/moist-central-server",
+    "start": "concurrently \"yarn client start\" \"yarn server start\" --names \"Client,Server\" --prefix-colors \"cyan,green\"",
+    "setup": "yarn && husky install",
+    "commit": "git-cz",
+    "pre-commit": "lint-staged",
+    "commit-msg": "commitlint --edit",
+    "reset": "yarn workspaces run reset && rimraf node_modules && yarn setup"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.3",
+    "@commitlint/config-conventional": "^18.4.3",
+    "@swc/core": "^1.3.102",
+    "@trivago/prettier-plugin-sort-imports": "^4.3.0",
+    "@types/node": "^20.10.6",
+    "@typescript-eslint/eslint-plugin": "^6.16.0",
+    "@typescript-eslint/parser": "^6.16.0",
+    "@vitejs/plugin-react-swc": "^3.5.0",
+    "@vitest/coverage-v8": "^1.1.1",
+    "commitizen": "^4.3.0",
+    "concurrently": "^8.2.2",
+    "eslint": "^8.56.0",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^15.2.0",
+    "prettier": "^3.1.1",
+    "rimraf": "^5.0.5",
+    "typescript": "^5.3.3",
+    "unplugin-swc": "^1.4.4",
+    "vite": "^5.0.10",
+    "vite-plugin-dts": "^3.7.0",
+    "vitest": "^1.1.1"
+  },
+  "commitlint": {
+    "extends": [
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "subject-case": [
+        2,
+        "always",
+        [
+          "sentence-case"
+        ]
+      ]
+    }
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,md,html,css}": [
+      "prettier --write",
+      "eslint"
+    ]
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  }
+}
