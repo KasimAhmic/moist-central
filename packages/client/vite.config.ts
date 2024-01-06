@@ -1,3 +1,4 @@
+/// <reference types="vitest" />
 import reactSwcPlugin from '@vitejs/plugin-react-swc';
 import { defineConfig } from 'vite';
 
@@ -11,5 +12,17 @@ export default defineConfig({
   plugins: [reactSwcPlugin()],
   build: {
     outDir: 'build',
+  },
+  test: {
+    coverage: {
+      provider: 'v8',
+      all: true,
+      thresholds: {
+        statements: 80,
+        branches: 80,
+        functions: 80,
+        lines: 80,
+      },
+    },
   },
 });

@@ -130,4 +130,5 @@ dist
 .pnp.*
 
 # Database
-*.sqlite8
+*.sqlite
+*.sqlite3
