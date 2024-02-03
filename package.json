@@ -15,6 +15,7 @@
     "server": "yarn workspace @ahmic/moist-central-server",
     "start": "concurrently \"yarn client start\" \"yarn server start\" --names \"Client,Server\" --prefix-colors \"cyan,green\"",
     "setup": "yarn && husky install",
+    "codegen": "rtk-query-codegen-openapi openapi-config.ts",
     "commit": "git-cz",
     "pre-commit": "lint-staged",
     "commit-msg": "commitlint --edit",
@@ -23,6 +24,7 @@
   "devDependencies": {
     "@commitlint/cli": "^18.4.3",
     "@commitlint/config-conventional": "^18.4.3",
+    "@faker-js/faker": "^8.3.1",
     "@swc/core": "^1.3.102",
     "@trivago/prettier-plugin-sort-imports": "^4.3.0",
     "@types/node": "^20.10.6",

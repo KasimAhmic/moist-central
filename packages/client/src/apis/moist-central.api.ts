@@ -1,38 +1,63 @@
-import { EntityState, createEntityAdapter } from '@reduxjs/toolkit';
+import { createEntityAdapter } from '@reduxjs/toolkit';
 import { DefinitionsFromApi, OverrideResultType } from '@reduxjs/toolkit/dist/query/endpointDefinitions';
 
+import { EntityStateFromAdapter } from '../@types/adapter-state';
 import {
-  FindAllMoneyGiveawayEntriesApiResponse,
-  MoneyGiveawayEntity,
+  FindAllGiveawayEntriesApiResponse,
+  FindAllGiveawaysApiResponse,
+  Giveaway,
+  GiveawayEntry,
   baseMoistCentralApi,
 } from './base-moist-central.api';
 
-const tags = ['money-giveaway'] as const;
+const tags = ['giveaway', 'giveaway-entry'] as const;
 
-export const moneyGiveawayAdapter = createEntityAdapter<MoneyGiveawayEntity, string>({
+export const giveawayAdapter = createEntityAdapter<Giveaway, Giveaway['id']>({
+  selectId: (entity) => entity.id,
+  sortComparer: (a, b) => a.createdOn - b.createdOn,
+});
+
+export const giveawayEntryAdapter = createEntityAdapter<GiveawayEntry, GiveawayEntry['id']>({
   selectId: (entity) => entity.id,
   sortComparer: (a, b) => a.createdOn - b.createdOn,
 });
 
 export const moistCentralApi = baseMoistCentralApi.enhanceEndpoints<TagTypes, UpdatedDefinitions>({
-  addTagTypes: ['money-giveaway'],
+  addTagTypes: tags,
   endpoints: {
-    submitMoneyGiveawayEntry: {
-      invalidatesTags: ['money-giveaway'],
+    createGiveaway: {
+      invalidatesTags: ['giveaway'],
     },
-    findAllMoneyGiveawayEntries: {
-      providesTags: ['money-giveaway'],
-      transformResponse: (response: FindAllMoneyGiveawayEntriesApiResponse) =>
-        moneyGiveawayAdapter.setAll(moneyGiveawayAdapter.getInitialState(), response),
+    findAllGiveaways: {
+      providesTags: ['giveaway'],
+      transformResponse: (response: FindAllGiveawaysApiResponse) =>
+        giveawayAdapter.setAll(giveawayAdapter.getInitialState(), response),
     },
-    findMoneyGiveawayEntry: {
-      providesTags: ['money-giveaway'],
+    removeAllGiveaways: {
+      invalidatesTags: ['giveaway'],
     },
-    removeMoneyGiveawayEntry: {
-      invalidatesTags: ['money-giveaway'],
+    findGiveaway: {
+      providesTags: ['giveaway'],
     },
-    removeAllMoneyGiveawayEntries: {
-      invalidatesTags: ['money-giveaway'],
+    updateGiveaway: {
+      invalidatesTags: ['giveaway'],
+    },
+    removeGiveaway: {
+      invalidatesTags: ['giveaway'],
+    },
+    findAllGiveawayEntries: {
+      providesTags: ['giveaway-entry'],
+      transformResponse: (response: FindAllGiveawayEntriesApiResponse) =>
+        giveawayEntryAdapter.setAll(giveawayEntryAdapter.getInitialState(), response),
+    },
+    findGiveawayEntry: {
+      providesTags: ['giveaway-entry'],
+    },
+    removeGiveawayEntry: {
+      invalidatesTags: ['giveaway-entry'],
+    },
+    removeAllGiveawayEntries: {
+      invalidatesTags: ['giveaway-entry'],
     },
   },
 });
@@ -44,16 +69,23 @@ export const {
   middleware: moistCentralMiddleware,
 } = moistCentralApi;
 
-export const moneyGiveawaySelectors = moneyGiveawayAdapter.getSelectors();
+export const giveawaySelectors = giveawayAdapter.getSelectors();
+export const giveawayEntrySelectors = giveawayEntryAdapter.getSelectors();
+
+export type GiveawayState = EntityStateFromAdapter<typeof giveawayAdapter>;
+export type GiveawayEntryState = EntityStateFromAdapter<typeof giveawayEntryAdapter>;
 
 type Definitions = DefinitionsFromApi<typeof baseMoistCentralApi>;
 type TagTypes = (typeof tags)[number];
 
-type UpdatedFindAllMoneyGiveawayEntriesDef = OverrideResultType<
-  Definitions['findAllMoneyGiveawayEntries'],
-  EntityState<MoneyGiveawayEntity, string>
+type UpdatedFindAllGiveawaysDef = OverrideResultType<Definitions['findAllGiveaways'], GiveawayState>;
+
+type UpdatedFindAllGiveawayEntriesDef = OverrideResultType<
+  Definitions['findAllGiveawayEntries'],
+  GiveawayEntryState
 >;
 
-type UpdatedDefinitions = Omit<Definitions, 'findAllMoneyGiveawayEntries'> & {
-  findAllMoneyGiveawayEntries: UpdatedFindAllMoneyGiveawayEntriesDef;
+type UpdatedDefinitions = Omit<Definitions, 'findAllGiveawayEntries' | 'findAllGiveaways'> & {
+  findAllGiveaways: UpdatedFindAllGiveawaysDef;
+  findAllGiveawayEntries: UpdatedFindAllGiveawayEntriesDef;
 };

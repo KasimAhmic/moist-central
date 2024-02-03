@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
-import { useFindAllMoneyGiveawayEntriesQuery } from '../apis';
+import { useFindAllGiveawayEntriesQuery } from '../apis';
 
 export const MoneyGiveawayEntriesProvider: FC = () => {
-  useFindAllMoneyGiveawayEntriesQuery();
+  useFindAllGiveawayEntriesQuery(3);
 
   return null;
 };
