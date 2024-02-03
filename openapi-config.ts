@@ -8,6 +8,7 @@ const config: ConfigFile = {
   exportName: 'baseMoistCentralApi',
   hooks: true,
   flattenArg: true,
+  useEnumType: true,
 };
 
 export default config;

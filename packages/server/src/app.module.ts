@@ -6,7 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { AppConfigModule } from './app-config/app-config.module';
 import { AppConfigService } from './app-config/app-config.service';
-import { MoneyGiveawayModule } from './money-giveaway/money-giveaway.module';
+import { GiveawayModule } from './giveaway/giveaway.module';
 
 @Module({
   imports: [
@@ -15,15 +15,17 @@ import { MoneyGiveawayModule } from './money-giveaway/money-giveaway.module';
       imports: [AppConfigModule],
       inject: [AppConfigService],
       useFactory: (configService: AppConfigService) => ({
-        type: 'sqlite',
+        type: 'better-sqlite3',
         database: configService.get('DATABASE_NAME'),
         entities: [join(__dirname, '**', '*.entity.{ts,js}')],
         migrations: [join(__dirname, 'common', 'migrations', '**', '*.{ts,js}')],
         migrationsRun: true,
+        synchronize: false,
+        enableWAL: true,
       }),
     }),
     ScheduleModule.forRoot(),
-    MoneyGiveawayModule,
+    GiveawayModule,
   ],
 })
 export class AppModule {}

@@ -39,7 +39,7 @@ async function bootstrap() {
 
   SwaggerModule.setup(docsPath, app, swaggerDocument, {
     swaggerOptions: {
-      defaultModelsExpandDepth: 2,
+      defaultModelsExpandDepth: 3,
     },
   });
 

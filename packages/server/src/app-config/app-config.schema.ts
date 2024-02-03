@@ -8,6 +8,8 @@ export interface MoistCentralConfig {
   NODE_ENV: string;
 
   DATABASE_NAME: string;
+
+  DEDUPE_GIVEWAY_ENTRIES: boolean;
 }
 
 export const appConfigSchema = Joi.object<MoistCentralConfig, true>({
@@ -18,4 +20,6 @@ export const appConfigSchema = Joi.object<MoistCentralConfig, true>({
   NODE_ENV: Joi.string().default(process.env.NODE_ENV || 'development'),
 
   DATABASE_NAME: Joi.string().default('moist-central.sqlite3'),
+
+  DEDUPE_GIVEWAY_ENTRIES: Joi.boolean().default(true),
 });
